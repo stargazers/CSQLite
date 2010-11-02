@@ -120,6 +120,19 @@ class CSQLite
 	}
 
 	// *******************************************
+	//	getLastInsertID
+	//
+	//	@brief Get last INSERT ID from database.
+	//
+	//	@return Last INSERT query ID.
+	//
+	// *******************************************
+	public function getLastInsertID()
+	{
+		return @sqlite_last_insert_rowid( $this->con );
+	}
+
+	// *******************************************
 	//	fetchAssoc
 	//
 	//	@brief Fetch resultset to assoc array
