@@ -214,6 +214,24 @@ class CSQLite
 			return -2;
 		}
 	}
+
+	// *******************************************
+	//	makeSafeForDb
+	//
+	//	@brief Makes a string safe for database
+	//
+	//	@param $q String
+	//
+	//	@return Escaped string.
+	//
+	// *******************************************
+	public function makeSafeForDb( $q )
+	{
+		$val = array( "\\", "\0", "\n", "\r", "\x1a", "'", '"' );
+		$rep = array( "\\\\", "\\0", "\\n", "\\r", "\Z", "\'", '\"' );
+
+		return str_replace( $val, $rep, $q );
+	}
 }
 
 ?>
