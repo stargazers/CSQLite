@@ -2,7 +2,7 @@
 
 /* 
 SQLite database class. 
-Copyright (C) 2009 Aleksi Räsänen <aleksi.rasanen@runosydan.net>
+Copyright (C) 2009, 2010 Aleksi Räsänen <aleksi.rasanen@runosydan.net>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -18,6 +18,16 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// *******************************************
+//	CSQLite
+/*!
+	@brief SQLite 2.x handling class for PHP.
+
+	@author Aleksi Räsänen
+	        <aleksi.rasanen@runosydan.net>
+			2009-2010
+*/
+// *******************************************
 class CSQLite
 {
 	//! Database connection
@@ -34,14 +44,14 @@ class CSQLite
 
 	// *******************************************
 	//	connect
-	//	
-	//	@brief Connects to database
-	//
-	//	@param $db Database
-	//
-	//	@param $create Create database if not
-	//		exists or not.
-	//
+	/*!
+		@brief Connects to database
+	
+		@param $db Database
+	
+		@param $create Create database if not
+			exists or not.
+	*/
 	// *******************************************
 	public function connect( $db, $create = false )
 	{
@@ -66,13 +76,13 @@ class CSQLite
 
 	// *******************************************
 	//	query
-	//	
-	//	@brief Execute query
-	//
-	//	@param $q SQL Query
-	//
-	//	@return Resultset
-	//
+	/*!
+		@brief Execute query
+	
+		@param $q SQL Query
+	
+		@return Resultset
+	*/
 	// *******************************************
 	public function query( $q )
 	{
@@ -96,16 +106,16 @@ class CSQLite
 
 	// *******************************************
 	//	numRows
-	//
-	//	@brief Return number of rows in resultset
-	//
-	//	@param [$ret] If this is given, use this resultset.
-	//		Otherwise use last resultset if user has
-	//		done at least one query. Otherwise throws
-	//		an exception.
-	//
-	//	@return Number of rows
-	//
+	/*!
+		@brief Return number of rows in resultset
+	
+		@param [$ret] If this is given, use this resultset.
+			Otherwise use last resultset if user has
+			done at least one query. Otherwise throws
+			an exception.
+	
+		@return Number of rows
+	*/
 	// *******************************************
 	public function numRows( $ret = '' )
 	{
@@ -121,11 +131,11 @@ class CSQLite
 
 	// *******************************************
 	//	getLastInsertID
-	//
-	//	@brief Get last INSERT ID from database.
-	//
-	//	@return Last INSERT query ID.
-	//
+	/*!
+		@brief Get last INSERT ID from database.
+	
+		@return Last INSERT query ID.
+	*/
 	// *******************************************
 	public function getLastInsertID()
 	{
@@ -134,16 +144,16 @@ class CSQLite
 
 	// *******************************************
 	//	fetchAssoc
-	//
-	//	@brief Fetch resultset to assoc array
-	//
-	//	@param [$ret] Resultset. If not given,
-	//		use resultset of last query.
-	//		If no queries are done, throws
-	//		an Exception.
-	//
-	//	@return Associative array.
-	//	
+	/*!
+		@brief Fetch resultset to assoc array
+	
+		@param [$ret] Resultset. If not given,
+			use resultset of last query.
+			If no queries are done, throws
+			an Exception.
+	
+		@return Associative array.
+	*/	
 	// *******************************************
 	public function fetchAssoc( $ret = '' )
 	{
@@ -165,9 +175,9 @@ class CSQLite
 	
 	// *******************************************
 	//	disconnect
-	//
-	//	@brief Close database connection
-	//
+	/*!
+		@brief Close database connection
+	*/
 	// *******************************************
 	public function disconnect()
 	{
@@ -180,23 +190,23 @@ class CSQLite
 
 	// *******************************************
 	//	queryAndAssoc
-	//
-	//	@brief Create SQL query and try to fetch
-	//    results to array.
-	//
-	//	@param $q Query to run. Note! Make sure that
-	//	  you have removed illegal characters, this
-	//	  function does NOT do it for you!
-	//
-	//	@return Array of values if there were any
-	//	  rows found what to fetch. If there were
-	//	  no rows found with query, then return -1.
-	//	  If query failed, return -2. Then it is
-	//	  better to use normal query instead of
-	//	  this for debug, this is useful only when
-	//	  you have already made sure that your queries
-	//	  will not fail.
-	//
+	/*!
+		@brief Create SQL query and try to fetch
+	    results to array.
+	
+		@param $q Query to run. Note! Make sure that
+		  you have removed illegal characters, this
+		  function does NOT do it for you!
+	
+		@return Array of values if there were any
+		  rows found what to fetch. If there were
+		  no rows found with query, then return -1.
+		  If query failed, return -2. Then it is
+		  better to use normal query instead of
+		  this for debug, this is useful only when
+		  you have already made sure that your queries
+		  will not fail.
+	*/
 	// *******************************************
 	public function queryAndAssoc( $q )
 	{
@@ -217,13 +227,13 @@ class CSQLite
 
 	// *******************************************
 	//	makeSafeForDb
-	//
-	//	@brief Makes a string safe for database
-	//
-	//	@param $q String
-	//
-	//	@return Escaped string.
-	//
+	/*!
+		@brief Makes a string safe for database
+	
+		@param $q String
+	
+		@return Escaped string.
+	*/
 	// *******************************************
 	public function makeSafeForDb( $q )
 	{
