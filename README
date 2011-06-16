@@ -1,0 +1,12 @@
+CSQLite
+=======
+
+	Description:
+		A php class for SQLite v2 database handling.
+	
+	License:
+		GNU AGPL v3
+	
+	Author:
+		Aleksi Räsänen, 2009, 2010
+		aleksi.rasanen@runosydan.net
