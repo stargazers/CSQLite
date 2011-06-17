@@ -2,7 +2,7 @@
 
 /* 
 SQLite database class. 
-Copyright (C) 2009, 2010 Aleksi Räsänen <aleksi.rasanen@runosydan.net>
+Copyright (C) 2009, 2010, 2011 Aleksi Räsänen <aleksi.rasanen@runosydan.net>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -21,11 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // *******************************************
 //	CSQLite
 /*!
-	@brief SQLite 2.x handling class for PHP.
-
+	@brief SQLite 2.x handling class for PHP
 	@author Aleksi Räsänen
-	        <aleksi.rasanen@runosydan.net>
-			2009-2010
+	@email aleksi.rasanen@runosydan.net
+	@copyright Aleksi Räsänen, 2009-2011
+	@license GNU AGPL v3
 */
 // *******************************************
 class CSQLite
@@ -46,11 +46,9 @@ class CSQLite
 	//	connect
 	/*!
 		@brief Connects to database
-	
 		@param $db Database
-	
-		@param $create Create database if not
-			exists or not.
+		@param $create Create database if not exists or not
+		@return Datavase connection
 	*/
 	// *******************************************
 	public function connect( $db, $create = false )
@@ -67,7 +65,8 @@ class CSQLite
 		// If something went wrong, throw Exception.
 		if( $err != '' )
 		{
-			throw new Exception( 'Cannot open or create database. Error: ' . $err );
+			throw new Exception( 'Cannot open or create database. Error: ' 
+				. $err );
 		}
 
 		$this->connected = true;
@@ -78,14 +77,18 @@ class CSQLite
 	//	query
 	/*!
 		@brief Execute query
-	
 		@param $q SQL Query
-	
 		@return Resultset
 	*/
 	// *******************************************
 	public function query( $q )
 	{
+		// We need to set custom error handler because if we get
+		// filesystem problem (eg. database is opened read only -mode 
+		// or something), then we should throw an exception for caller.
+		set_error_handler( array( $this, 'customErrorHandler' ), 
+			E_WARNING );
+
 		// Try to create queries only if we have connected
 		if(! $this->connected )
 			throw new Exception( 'No database connection!' );
@@ -104,16 +107,37 @@ class CSQLite
 		return $this->lastResults;
 	}
 
+	// ************************************************** 
+	//  customErrorHandler
+	/*!
+		@brief Error handler which will throw exceptions
+		  when we get warnings. 		
+		@param $errorNumber Error number
+		@param $errorString Error string
+	*/
+	// ************************************************** 
+	private function customErrorHandler( $errorNumber, $errorString )
+	{
+		if( strstr( $errorString, 'unable to open database file' ) )
+		{
+			throw new Exception( 'ERROR! Unable to open database file. '
+				. 'Common reason for this is that the database file do not '
+				. 'have write permissions and/or directory where it '
+				. 'belongs do not have permissions for writing.' );
+		}
+
+		throw new Exception( 'ERROR: ' . $errorNumber . ' - ' 
+			. $errorString );
+	}
+
 	// *******************************************
 	//	numRows
 	/*!
 		@brief Return number of rows in resultset
-	
 		@param [$ret] If this is given, use this resultset.
 			Otherwise use last resultset if user has
 			done at least one query. Otherwise throws
 			an exception.
-	
 		@return Number of rows
 	*/
 	// *******************************************
@@ -132,9 +156,8 @@ class CSQLite
 	// *******************************************
 	//	getLastInsertID
 	/*!
-		@brief Get last INSERT ID from database.
-	
-		@return Last INSERT query ID.
+		@brief Get last INSERT ID from database
+		@return Last INSERT query ID
 	*/
 	// *******************************************
 	public function getLastInsertID()
@@ -146,13 +169,10 @@ class CSQLite
 	//	fetchAssoc
 	/*!
 		@brief Fetch resultset to assoc array
-	
 		@param [$ret] Resultset. If not given,
-			use resultset of last query.
-			If no queries are done, throws
-			an Exception.
-	
-		@return Associative array.
+			use resultset of last query. If no queries are done, 
+			throws an Exception.
+		@return Associative array
 	*/	
 	// *******************************************
 	public function fetchAssoc( $ret = '' )
@@ -192,12 +212,10 @@ class CSQLite
 	//	queryAndAssoc
 	/*!
 		@brief Create SQL query and try to fetch
-	    results to array.
-	
+	      results to array.
 		@param $q Query to run. Note! Make sure that
 		  you have removed illegal characters, this
 		  function does NOT do it for you!
-	
 		@return Array of values if there were any
 		  rows found what to fetch. If there were
 		  no rows found with query, then return -1.
@@ -229,10 +247,8 @@ class CSQLite
 	//	makeSafeForDb
 	/*!
 		@brief Makes a string safe for database
-	
 		@param $q String
-	
-		@return Escaped string.
+		@return Escaped string
 	*/
 	// *******************************************
 	public function makeSafeForDb( $q )
