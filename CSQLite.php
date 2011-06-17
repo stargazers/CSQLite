@@ -253,8 +253,8 @@ class CSQLite
 	// *******************************************
 	public function makeSafeForDb( $q )
 	{
-		$val = array( "\\", "\0", "\n", "\r", "\x1a", "'", '"' );
-		$rep = array( "\\\\", "\\0", "\\n", "\\r", "\Z", "\'", '\"' );
+		$val = array(  "\0", "\n", "\r", "\x1a", "'", '"' );
+		$rep = array(  "\\0", "\\n", "\\r", "\Z", "''", '""' );
 
 		return str_replace( $val, $rep, $q );
 	}
